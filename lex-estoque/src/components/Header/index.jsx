@@ -1,9 +1,8 @@
 // function ou arrow function - seja consistente
-export const Header = ({ logout }) => {
+export const Header = () => {
    return(
         <header>
-            { /* addEventListener */}
-            <button onClick={logout}>Sair</button>
+            Header
         </header>
     )
 }

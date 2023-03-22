@@ -1,27 +1,54 @@
-import { Header } from "./components/Header";
-import { Footer } from "./components/Footer";
 import { CardProduct } from "./components/CardProduct";
+import { RegisterProductForm } from "./components/RegisterProductForm";
+import { DefaultTemplate } from "./templates/DefaultTemplate";
 
 function App() {
    //JSX = HTML + JS
    //Estado - useState
+   // O estado é imutável (precisa ser alterado por meio da função modificadora (SET))
+   // const [variavel, funcaoModicadora] = useState( /* valor inicial */);
+   /*
+   const [product, setProduct] = useState({
+      name: 'Potato'
+   })
+
+   function something(){
+      setProduct({ name: "Otavio"})
+      // product = { name: Otavio }
+   }
+   */
+   /*
+   const [count, setCount] = useState(0);
+
+   function sum(){
+      setCount(count + 1);
+   }
+
+   function sub(){
+      setCount(count - 1);
+   }
+   */
 
    const fruitList = [
       {
          productName: "Banana",
          productWeight: 20,
+         productCategory: "frutas",
       },
       {
          productName: "Morango",
          productWeight: 5,
+         productCategory: "frutas",
       },
       {
          productName: "Uva",
          productWeight: 12,
+         productCategory: "frutas",
       },
       {
          productName: "Maçã",
          productWeight: 20,
+         productCategory: "frutas",
       },
    ];
 
@@ -34,35 +61,24 @@ function App() {
          slug: "legumes",
          label: "Legumes",
       },
+      {
+         slug: "ovos",
+         label: "Ovos",
+      }
    ];
 
-   function logout(){
-    console.log('logout');
-   }
-
-   // Imperativa (Vanilla) -> Declarativas (React) 
-
-   // map - retorna um resultado para cada item da minha lista (constroí uma lista nova)
-
-   // entende como criar os componentes
-   // fazer a passagem de props
-   // entender o funcionamento do map
+   // children - Children é um props especial, que emula o comportamento de tags abertas, renderizando o que estiver no interior da tag
 
    return (
-      <main>
-         <Header logout={logout} />
-         <div className="App">
+      <DefaultTemplate>
+         <div>                          
             <h1>Meu estoque: </h1>
-            {/* a chave é obrigatoria no map, e ficará no primeiro elemento o componente retornado */}
-            {/* retorno implicito */}
             <ul>
-               {categories.map(({ label, slug }, index) => (                
-                  <li key={slug}>{label}</li>  
+               {categories.map(({ label, slug }, index) => (
+                  <li key={slug}>{label}</li>
                ))}
             </ul>
-            {/* retorno declarado */}
-            { /* como eu vejo: ["A", "B", "C"] */}
-            { /* como o React entende (sem key) ["A", "A", "A"] */}
+            <RegisterProductForm categories={categories} />
             <ul>
                {fruitList.map(({ productName, productWeight }, index) => {
                   return (
@@ -75,8 +91,7 @@ function App() {
                })}
             </ul>
          </div>
-         <Footer />
-      </main>
+      </DefaultTemplate>
    );
 }
 
