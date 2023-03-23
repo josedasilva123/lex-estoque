@@ -1,34 +1,12 @@
-import { CardProduct } from "./components/CardProduct";
+import { useState } from "react"; 
 import { RegisterProductForm } from "./components/RegisterProductForm";
 import { DefaultTemplate } from "./templates/DefaultTemplate";
+import { v4 as uuidv4 } from 'uuid';
+import { ListProduct } from "./components/ListProduct";
+import { ListCategories } from "./components/ListCategories";
+import './styles/index.css';
 
 function App() {
-   //JSX = HTML + JS
-   //Estado - useState
-   // O estado é imutável (precisa ser alterado por meio da função modificadora (SET))
-   // const [variavel, funcaoModicadora] = useState( /* valor inicial */);
-   /*
-   const [product, setProduct] = useState({
-      name: 'Potato'
-   })
-
-   function something(){
-      setProduct({ name: "Otavio"})
-      // product = { name: Otavio }
-   }
-   */
-   /*
-   const [count, setCount] = useState(0);
-
-   function sum(){
-      setCount(count + 1);
-   }
-
-   function sub(){
-      setCount(count - 1);
-   }
-   */
-
    const fruitList = [
       {
          productName: "Banana",
@@ -65,33 +43,56 @@ function App() {
          slug: "ovos",
          label: "Ovos",
       }
-   ];
+   ];   
 
-   // children - Children é um props especial, que emula o comportamento de tags abertas, renderizando o que estiver no interior da tag
+   const [darkMode, setDarkMode] = useState(false);
+
+   const [productList, setProductList] = useState([]);
+
+   //const [count, setCount] = useState(0); - posso forjar id com estado de contador
+
+   const addProductToProductList = (formData) => {
+      // utilizar o uuidv4
+      const newProduct = { ...formData, id: uuidv4(), productWeight: Number(formData.productWeight)};
+      setProductList([...productList, newProduct]);
+   }
+
+   const removeProductFromProductList = (productId) => {
+      const newProductList = productList.filter((product) => product.id !== productId);
+      setProductList(newProductList);
+
+      /* retorna tudo, menos o item que eu quero remover */
+   }
+
+   const editProductFromProductList = (productId, productWeight) => {
+      const newProductList = productList.map((product) => {
+         if(product.id === productId){
+            //Produto que eu quero editar vai ser alterado
+            return { ...product, productWeight: Number(productWeight)};
+         } else {
+            //Demais produtos serão mantidos do mesmo jeito
+            return product;
+         }
+      })
+
+      setProductList(newProductList);
+   }
 
    return (
-      <DefaultTemplate>
-         <div>                          
+      <div className={darkMode ? "darkMode" : "lightMode"}>
+         <DefaultTemplate>
+         <div>             
+            <button onClick={() => setDarkMode(!darkMode)}>
+               {darkMode ? "Ir para Light Mode" : "Ir para Dark Mode"}
+            </button>             
             <h1>Meu estoque: </h1>
-            <ul>
-               {categories.map(({ label, slug }, index) => (
-                  <li key={slug}>{label}</li>
-               ))}
-            </ul>
-            <RegisterProductForm categories={categories} />
-            <ul>
-               {fruitList.map(({ productName, productWeight }, index) => {
-                  return (
-                     <CardProduct
-                        key={productName}
-                        productName={productName}
-                        productWeight={productWeight}
-                     />
-                  );
-               })}
-            </ul>
+            <ListCategories categories={categories} />
+            <RegisterProductForm categories={categories} addProductToProductList={addProductToProductList} />
+            <ListProduct editProductFromProductList={editProductFromProductList} productList={productList} removeProductFromProductList={removeProductFromProductList} />
          </div>
       </DefaultTemplate>
+      </div>
+      
    );
 }
 

@@ -1,0 +1,7 @@
+.lightMode{
+    --color-primary: blue;
+}
+
+.darkMode{
+    --color-primary: darkblue;
+}

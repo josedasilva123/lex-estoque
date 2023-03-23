@@ -1,16 +1,6 @@
 import { useState } from "react"
 
-export const RegisterProductForm = ({ categories }) => {
-    /*
-        productName: "Banana",
-        productWeight: 20,
-        productCategory: "frutas",
-    */
-
-        // Dados únicos: string, number, boolean
-        // Array: lista de dados
-        // Objeto: conjunto de dados
-
+export const RegisterProductForm = ({ categories, addProductToProductList }) => { 
         
     const [formData, setFormData] = useState({
         productName: "",
@@ -20,10 +10,11 @@ export const RegisterProductForm = ({ categories }) => {
 
     const submit = (event) => {
         event.preventDefault();
-        console.log(formData);
+        addProductToProductList(formData);
     }
+
+    const isEmpty = formData.productName === "" || formData.productWeight === "" || formData.productCategory === "";
     
-    /* spread operator ele pode servir para pegar tudo que está num objeto ou lista e aplicar num novo objeto o lista */    
     return(
         <form onSubmit={submit}>
             { /* adicionar evento de onChange para captura e espelhar o valor do estado no atributo value*/}
@@ -35,42 +26,7 @@ export const RegisterProductForm = ({ categories }) => {
                     <option key={category.slug} value={category.slug}>{category.label}</option>
                 ))}
             </select>
-            <button type="submit">Cadastrar Produtos</button>
+            <button type="submit" disabled={isEmpty ? true : false}>Cadastrar Produtos</button>
         </form>
     )
 }
-
-/*
-export const RegisterProductForm = ({ categories }) => {    
-        productName: "Banana",
-        productWeight: 20,
-        productCategory: "frutas",
-    
-    const [productName, setProductName] = useState("");
-    const [productWeight, setProductWeight] = useState("");
-    const [productCategory, setProductCategory] = useState("");
-
-    const submit = (event) => {
-        event.preventDefault();
-        console.log({ productName, productWeight, productCategory})
-        setProductName("");
-        setProductWeight("");
-        setProductCategory("");
-    }
-    
-    
-    return(
-        <form onSubmit={submit}>
-            <input type="text" value={productName} onChange={(event) => setProductName(event.target.value)}/>
-            <input type="number" value={productWeight} onChange={(event) => setProductWeight(event.target.value)} />
-            <select value={productCategory} onChange={(event) => setProductCategory(event.target.value)}>
-                <option value="">Selecione uma categoria</option>
-                {categories.map(category => (
-                    <option key={category.slug} value={category.slug}>{category.label}</option>
-                ))}
-            </select>
-            <button type="submit">Cadastrar Produtos</button>
-        </form>
-    )
-}
-*/
