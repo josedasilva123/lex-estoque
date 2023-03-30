@@ -11,6 +11,11 @@ export const RegisterProductForm = ({ categories, addProductToProductList }) => 
     const submit = (event) => {
         event.preventDefault();
         addProductToProductList(formData);
+        setFormData({
+            productName: "",
+            productWeight: "",
+            productCategory: "", 
+        })
     }
 
     const isEmpty = formData.productName === "" || formData.productWeight === "" || formData.productCategory === "";
